@@ -3,10 +3,15 @@
 *::before {
   box-sizing: border-box;
 }
+html {
+  font-family: "Play", sans-serif;
+}
 
 :root {
   --cell-size: 8rem;
-  --mark-size: cal(var(--cell-size) * 0.9);
+  --mark-size: calc(var(--cell-size) * 0.7);
+  --X-color: blue;
+  --O-color: red;
 }
 
 body {
@@ -19,11 +24,167 @@ body {
   display: grid;
   justify-content: center;
   align-content: center;
+  justify-items: center;
+  align-items: center;
   grid-template-columns: repeat(3, auto);
 }
 
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
-  border: solid black 1px;
+  border: 5px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+  border-top: none;
+}
+
+.cell:nth-child(3n + 1) {
+  border-left: none;
+}
+
+.cell:nth-child(3n + 3) {
+  border-right: none;
+}
+
+.cell:last-child,
+.cell:nth-child(7),
+.cell:nth-child(8) {
+  border-bottom: none;
+}
+
+.cell.X::before,
+.board.X .cell:not(.X):not(.O):hover::before {
+  content: "";
+  clip-path: polygon(
+    20% 0%,
+    0% 20%,
+    30% 50%,
+    0% 80%,
+    20% 100%,
+    50% 70%,
+    80% 100%,
+    100% 80%,
+    70% 50%,
+    100% 20%,
+    80% 0%,
+    50% 30%
+  );
+  height: calc(var(--mark-size) * 0.9);
+  width: calc(var(--mark-size) * 0.9);
+  background-color: var(--X-color);
+}
+
+.board.X .cell:not(.X):not(.O):hover::before {
+  background-color: rgba(0, 0, 255, 0.15);
+}
+
+.board.O .cell:not(.X):not(.O):hover::before,
+.cell.O::before {
+  content: "";
+  clip-path: circle(50% at 50% 50%);
+  height: var(--mark-size);
+  width: var(--mark-size);
+  background-color: var(--O-color);
+}
+
+.board.O .cell:not(.X):not(.O):hover::after,
+.cell.O::after {
+  position: absolute;
+  content: "";
+  clip-path: circle(50% at 50% 50%);
+  height: calc(var(--mark-size) * 0.7);
+  width: calc(var(--mark-size) * 0.7);
+  background-color: white;
+}
+
+.board.O .cell:not(.X):not(.O):hover::before {
+  background-color: rgba(255, 0, 0, 0.15);
+}
+
+.board.O .cell:not(.X):not(.O):hover::after {
+  background-color: white;
+}
+.cell.X,
+.cell.O {
+  cursor: not-allowed;
+}
+
+.winning-message {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 6rem;
+  flex-direction: column;
+}
+
+.show {
+  display: flex;
+}
+
+.btn {
+  position: relative;
+  padding: 15px 20px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  transition: 0.5s ease;
+  font-weight: 900;
+}
+
+a.btn {
+  position: relative;
+  display: inline-block;
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.6);
+  width: 12rem;
+  height: 4rem;
+  border-radius: 1rem;
+}
+
+a.btn span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--X-color);
+  background: var(--O-color);
+  text-shadow: 2px 2px 0px rgba(141, 42, 196, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.8rem;
+}
+
+a.btn span:nth-child(2) {
+  color: var(--O-color);
+  background: var(--X-color);
+  text-shadow: 2px 2px 0px rgba(27, 1, 4, 0.15);
+
+  overflow: hidden;
+  z-index: 2;
+  transition: 0.5s;
+  clip-path: polygon(60% 0, 100% 0%, 100% 100%, 60% 100%, 40% 50%);
+}
+
+a.btn span:nth-child(2):hover {
+  clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 100%, 0 50%);
+}
+
+a.btn span:nth-child(1):hover ~ span:nth-child(2) {
+  clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%, 100% 50%);
 }
