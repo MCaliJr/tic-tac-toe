@@ -10,7 +10,7 @@ This is TOP project: simple tic tac toe game which I will spice up with the desi
 
 - JavaScript (ES6)
   - Honed my objects and object constructors skills
-  - Used Factory Functions and Module Pattern to work on cleanliness of my code
+  - Used Module Pattern to work on cleanliness of my code
 - CSS3
   - Tried to make design of the game stand out using pure CSS
 - HTML5
