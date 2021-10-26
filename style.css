@@ -10,8 +10,8 @@ html {
 :root {
   --cell-size: 8rem;
   --mark-size: calc(var(--cell-size) * 0.7);
-  --X-color: blue;
-  --O-color: red;
+  --O-color: #008678;
+  --X-color: #45e6d5;
 }
 
 body {
@@ -21,6 +21,12 @@ body {
 .board {
   width: 100vw;
   height: 100vh;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.4)
+  );
+  background-color: #1cd1be;
   display: grid;
   justify-content: center;
   align-content: center;
@@ -32,7 +38,7 @@ body {
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
-  border: 5px solid black;
+  border: 0.6rem solid black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,7 +88,7 @@ body {
 }
 
 .board.X .cell:not(.X):not(.O):hover::before {
-  background-color: rgba(0, 0, 255, 0.15);
+  background-color: #45e6d64f;
 }
 
 .board.O .cell:not(.X):not(.O):hover::before,
@@ -99,24 +105,35 @@ body {
   position: absolute;
   content: "";
   clip-path: circle(50% at 50% 50%);
-  height: calc(var(--mark-size) * 0.7);
-  width: calc(var(--mark-size) * 0.7);
-  background-color: white;
+  height: calc(var(--mark-size) * 0.6);
+  width: calc(var(--mark-size) * 0.6);
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.4)
+  );
+  background-color: turquoise;
 }
 
 .board.O .cell:not(.X):not(.O):hover::before {
-  background-color: rgba(255, 0, 0, 0.15);
+  background-color: #00867838;
 }
 
 .board.O .cell:not(.X):not(.O):hover::after {
-  background-color: white;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.4)
+  );
+  background-color: turquoise;
 }
 .cell.X,
 .cell.O {
   cursor: not-allowed;
 }
 
-.winning-message {
+.winning-message,
+.starting-message {
   display: none;
   position: fixed;
   top: 0;
@@ -129,10 +146,49 @@ body {
   color: white;
   font-size: 6rem;
   flex-direction: column;
+  text-align: center;
+}
+
+.starting-message h3,
+.winning-message h3 {
+  margin: 0;
+  padding: 0;
+  text-shadow: 6px 6px 0px rgba(0, 0, 0, 0.25);
+
+  -webkit-text-stroke: 4px black; /* width and color */
+  color: var(--O-color);
+}
+
+.input-box {
+  padding: 0 0 0 0;
+  margin: 0.8rem auto;
+}
+
+.input-box input {
+  min-width: 80%;
+  max-width: 100%;
+  border: 3px solid #1b0129;
+  padding: 15px;
+  font-size: 2rem;
+  border-radius: 1rem;
+  background: var(--O-color);
+  color: var(--X-color);
+  font-weight: bold;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.input-box:nth-child(2) input {
+  background: var(--X-color);
+  color: var(--O-color);
 }
 
 .show {
   display: flex;
+}
+
+#startButton {
+  margin: 3rem 0 0 0;
 }
 
 .btn {
@@ -149,10 +205,11 @@ body {
 a.btn {
   position: relative;
   display: inline-block;
-  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.6);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.25);
   width: 12rem;
   height: 4rem;
   border-radius: 1rem;
+  border: 3px solid #1b0129;
 }
 
 a.btn span {
@@ -163,7 +220,7 @@ a.btn span {
   height: 100%;
   color: var(--X-color);
   background: var(--O-color);
-  text-shadow: 2px 2px 0px rgba(141, 42, 196, 0.25);
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -173,7 +230,7 @@ a.btn span {
 a.btn span:nth-child(2) {
   color: var(--O-color);
   background: var(--X-color);
-  text-shadow: 2px 2px 0px rgba(27, 1, 4, 0.15);
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
 
   overflow: hidden;
   z-index: 2;
@@ -187,4 +244,20 @@ a.btn span:nth-child(2):hover {
 
 a.btn span:nth-child(1):hover ~ span:nth-child(2) {
   clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%, 100% 50%);
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #000000;
+  opacity: 0.3; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #000000;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #000000;
 }

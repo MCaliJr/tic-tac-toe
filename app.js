@@ -1,105 +1,127 @@
-// add class X or O to div with class .board once it is turn of X or O player, so it will fire the hover effect
+// Whole game module, returning nothing as game elements call on each other in never ending loop
+const game = (() => {
+  const X_CLASS = "X";
+  const O_CLASS = "O";
 
-// After game finishes, add .show class to div  with .winning-message, so the message will show.
+  const WINNING_COMBINATIONS = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
 
-// After player clicks on any part of the board, add HIS element into it (so either O or X, depending on whose round it is)
+  // Choose elements from the site
+  const cellElements = document.querySelectorAll("[data-cell]");
+  const board = document.querySelector("#board");
 
-function popupToggle() {
-  console.log("hello");
-}
+  const startingMessageElement = document.querySelector("#startingMessage");
+  const winningMessageElement = document.querySelector("#winningMessage");
+  const winningMessageTextElement = document.querySelector(
+    "[data-winning-message-text]"
+  );
+  const restartButton = document.querySelector("#restartButton");
+  const startButton = document.querySelector("#startButton");
+  let circlesTurn;
 
-const X_CLASS = "X";
-const O_CLASS = "O";
-const WINNING_COMBINATIONS = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [0, 4, 8],
-  [2, 4, 6],
-];
+  restartButton.addEventListener("click", resetGame);
+  startButton.addEventListener("click", startGame);
 
-const cellElements = document.querySelectorAll("[data-cell]");
-const board = document.querySelector("#board");
-const winningMessageElement = document.querySelector("#winningMessage");
-const winningMessageTextElement = document.querySelector(
-  "[data-winning-message-text]"
-);
-const restartButon = document.querySelector("#restartButton");
-let circlesTurn;
-
-startGame();
-
-restartButon.addEventListener("click", startGame);
-
-function startGame() {
-  cellElements.forEach((cell) => {
-    cell.classList.remove(X_CLASS);
-    cell.classList.remove(O_CLASS);
-    circlesTurn = false;
-    cell.removeEventListener("click", handleClick);
-    cell.addEventListener("click", handleClick, { once: true });
-  });
-  setBoardHover();
-  winningMessageElement.classList.remove("show");
-}
-
-function handleClick(e) {
-  const cell = e.target;
-  const currentClass = circlesTurn ? O_CLASS : X_CLASS;
-  // placeMark
-  placeMark(cell, currentClass);
-  // check for win
-  if (checkWin(currentClass)) {
-    endGame(false);
-  } else if (isDraw()) {
-    endGame(true);
-  } else {
-    swapTurns();
-    setBoardHover();
-  }
-}
-
-function endGame(draw) {
-  if (draw) {
-    winningMessageTextElement.innerText = "Draw!";
-  } else {
-    winningMessageTextElement.innerText = `${
-      circlesTurn ? "O's" : "X's"
-    } Wins!!!`;
-  }
-  winningMessageElement.classList.add("show");
-}
-
-function isDraw() {
-  return Array.from(cellElements).every((cell) => {
-    return cell.classList.contains(X_CLASS) || cell.classList.contains(O_CLASS);
-  });
-}
-
-function placeMark(cell, currentClass) {
-  cell.classList.add(currentClass);
-}
-
-function swapTurns() {
-  circlesTurn = !circlesTurn;
-}
-
-function setBoardHover() {
-  board.classList.remove(X_CLASS);
-  board.classList.remove(O_CLASS);
-  if (circlesTurn) {
-    board.classList.add(O_CLASS);
-  } else {
-    board.classList.add(X_CLASS);
-  }
-}
-
-function checkWin(currentClass) {
-  return WINNING_COMBINATIONS.some((combination) => {
-    return combination.every((index) => {
-      return cellElements[index].classList.contains(currentClass);
+  function startGame() {
+    cellElements.forEach((cell) => {
+      // Delete mark from every cell
+      cell.classList.remove(X_CLASS);
+      cell.classList.remove(O_CLASS);
+      // Make sure it is X's turn
+      circlesTurn = false;
+      cell.removeEventListener("click", handleClick);
+      // Make sure user can click on a given board part only once
+      cell.addEventListener("click", handleClick, { once: true });
     });
-  });
-}
+    // Set hover effect for the board
+    setBoardHover();
+    // Delete starting game message
+    startingMessageElement.classList.remove("show");
+  }
+
+  function resetGame() {
+    // Reset the board and all settings
+    startGame();
+    // Remove winner alert and display new game screen
+    winningMessageElement.classList.remove("show");
+    startingMessageElement.classList.add("show");
+  }
+
+  function handleClick(e) {
+    // Choose clicked cell
+    const cell = e.target;
+    const currentClass = circlesTurn ? O_CLASS : X_CLASS;
+    // Place X or O inside the clicked cell
+    placeMark(cell, currentClass);
+    // Check for win, draw or continue playing
+    if (checkWin(currentClass)) {
+      endGame(false);
+    } else if (isDraw()) {
+      endGame(true);
+    } else {
+      swapTurns();
+      setBoardHover();
+    }
+  }
+
+  function endGame(draw) {
+    if (draw) {
+      winningMessageTextElement.innerText = "Draw!";
+    } else {
+      // Get player nicknames from input fields
+      let playerOneName = document.querySelector("#playerOne").value;
+      let playerTwoName = document.querySelector("#playerTwo").value;
+
+      // Display winner's name in final message
+      winningMessageTextElement.innerText = `${
+        !circlesTurn ? `${playerOneName}` : `${playerTwoName}`
+      } Wins!!!`;
+    }
+    winningMessageElement.classList.add("show");
+  }
+
+  // Check if there is a draw (no win and every cell taken by some mark)
+  function isDraw() {
+    return Array.from(cellElements).every((cell) => {
+      return (
+        cell.classList.contains(X_CLASS) || cell.classList.contains(O_CLASS)
+      );
+    });
+  }
+
+  function placeMark(cell, currentClass) {
+    cell.classList.add(currentClass);
+  }
+
+  function swapTurns() {
+    circlesTurn = !circlesTurn;
+  }
+
+  // Make sure board hover effect resets and work only on cells that were not chosen yet!
+  function setBoardHover() {
+    board.classList.remove(X_CLASS);
+    board.classList.remove(O_CLASS);
+    if (circlesTurn) {
+      board.classList.add(O_CLASS);
+    } else {
+      board.classList.add(X_CLASS);
+    }
+  }
+
+  function checkWin(currentClass) {
+    // Go through winning combinations and return true if any marks happend to take specified cells indexes.
+    return WINNING_COMBINATIONS.some((combination) => {
+      return combination.every((index) => {
+        return cellElements[index].classList.contains(currentClass);
+      });
+    });
+  }
+})();
