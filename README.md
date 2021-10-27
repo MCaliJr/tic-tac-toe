@@ -1,23 +1,32 @@
 # ⭕ Tic Tac Toe ❌
 
-This is TOP project: simple tic tac toe game which I will spice up with the design 😎, so it does not look so basic.
+This is TOP project: simple tic tac toe game which I spiced up with the design 😎, so it does not look so basic.
 
-👉 [**Check Live Demo**]( Paste demo link here )
+👉 [**Check Live Demo**](https://mcalijr.github.io/tic-tac-toe/)
 
-![Alt text](/READMEscreenshot.png "Design") <-- Add picture of game here
+![Alt text](/imgs/READMEscreenshot1.png "Design - Starting game screen")
+
+![Alt text](/imgs/READMEscreenshot2.png "Design - board")
+
+![Alt text](/imgs/READMEscreenshot3.png "Design - Finished game screen")
 
 ## Technologies used
 
 - JavaScript (ES6)
-  - Honed my objects and object constructors skills
-  - Used Module Pattern to work on cleanliness of my code
+
+  - Used Module Pattern to make variables and methods private
+
 - CSS3
+
   - Tried to make design of the game stand out using pure CSS
+
 - HTML5
 
 ## Features
 
-- Ability to play the game of Tic Tac Toe with Your buddy (or with Yourself if there are is buddy around.)
+- Ability to play the game of Tic Tac Toe with Your buddy (or with Yourself if there is no buddy around.)
+- Ability to choose each player's nickname.
+- Fancy color scheme with nice touchups.
 
 ## Acknowledgement
 
