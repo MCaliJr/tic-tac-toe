@@ -27,6 +27,17 @@ const game = (() => {
   const startButton = document.querySelector("#startButton");
   let circlesTurn;
 
+  // Make the game start on Enter key click
+  document
+    .getElementById("playerTwo")
+    .addEventListener("keyup", function (event) {
+      event.preventDefault();
+      if (event.keyCode === 13) {
+        console.log("clicked");
+        startButton.click();
+      }
+    });
+
   restartButton.addEventListener("click", resetGame);
   startButton.addEventListener("click", startGame);
 
