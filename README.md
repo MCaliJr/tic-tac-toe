@@ -22,6 +22,8 @@ This is TOP project: simple tic tac toe game which I spiced up with the design ð
 
 - HTML5
 
+  - Typical HTML stuff... Nothing fancy here ðŸ¤ª
+
 ## Features
 
 - Ability to play the game of Tic Tac Toe with Your buddy (or with Yourself if there is no buddy around.)
